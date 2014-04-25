@@ -1,4 +1,5 @@
 from git import *
+import json, os, difflib
 from subprocess import Popen, PIPE
 
 bind = {}
@@ -15,11 +16,22 @@ def Oleg(owner, repo):
 		git.pull()
 		# Run ccpcheck
 		print "Running ccpcheck.."
-		cppres = Popen(["cppcheck","-I",owner+"/"+repo+"/include",owner+"/"+repo+"/src"], stdout=PIPE, stderr=PIPE).stderr.read()
-		commitlog = "Commit %s - %s\r\n%s (%s <%s>)\r\n\r\n" % (commit["id"], commit["timestamp"], commit["message"], commit["author"]["name"], commit["author"]["email"])
-		# Write to file
-		with open(owner+"."+repo+"."+branch.replace("/",".")+".log", "w") as logfile:
-			logfile.write(commitlog+"CPPCHECK RESULT\r\n\r\n"+cppres)
+		cppres = Popen(["cppcheck","-I",owner+"/"+repo+"/include",owner+"/"+repo+"/src"], stdout=PIPE, stderr=PIPE).stderr.readlines()
+		cdata = {"id":commit["id"], "timestamp":commit["timestamp"], "message":commit["message"], author:commit["author"]}
+		filepath = owner+"."+repo+"."+branch.replace("/",".")
+		# Load old file (if it exists)
+		if os.path.isfile(filepath+".cppcheck.log"):
+			with open(filepath+".cppcheck.log","r") as cppfile:
+				oldcpp = cppfile.readlines()
+				cppdiff = difflib.unified_diff(oldcpp, cppres)
+				outcpp = ''.join(cppdiff)
+		else:
+			outcpp = ''.join(cppres)
+		# Write to files
+		with open(filepath+".cppcheck.log","w") as cppfile:
+			outcpp.write(cppres)
+		with open(filepath+".json", "w") as logfile:
+			logfile.write(json.dumps(cdata))
 		print "Logfile written!"
 		return "All okay!"
 	return process

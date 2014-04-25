@@ -13,6 +13,7 @@ urls = (
 app = web.application(urls, globals())
 
 refstr = len("refs/heads/")
+templates = web.template.render("templates")
 
 class push:
     def POST(self, owner, repo):
@@ -25,12 +26,16 @@ class push:
 
 class get:
     def GET(self, owner, repo, branch):
-        fname = owner+"."+repo+"."+branch.replace("/",".")+".log"
+        fname = owner+"."+repo+"."+branch.replace("/",".")
         # Check if logfile exists
-        if os.path.isfile(fname):
-            web.header('Content-Type', 'text/plain')
-            with open(fname, "r") as logfile:
-                return logfile.read()
+        if os.path.isfile(fname+".json"):
+            web.header('Content-Type', 'text/html')
+            with open(fname+".json", "r") as logfile:
+                logdata = json.loads(logfile.read())
+            with open(fname+".cppcheck.log","r") as cppcheck:
+                cppdata = cppcheck.read()
+                logdata["cpp"] = cppdata
+            render.log(logdata)
         else:
             return web.notfound()
 
