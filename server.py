@@ -35,4 +35,4 @@ class get:
             return web.notfound()
 
 if __name__ == "__main__":
-    web.httpserver.runsimple(app.wsgifunc(), ("0.0.0.0", 4567))
+    web.httpserver.runsimple(app.wsgifunc(), ("127.0.0.1", 4567))
