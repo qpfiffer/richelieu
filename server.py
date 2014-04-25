@@ -6,7 +6,7 @@ import os.path
 import scripts
 
 urls = (
-    '/richelieu/([^/]*)/([^/]*)', 'push'
+    '/richelieu/([^/]*)/([^/]*)', 'push',
     '/richelieu/([^/]*)/([^/]*)/([^/]*)', 'get'
 )
 
