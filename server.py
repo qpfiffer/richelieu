@@ -25,7 +25,7 @@ class push:
 
 class get:
     def GET(self, owner, repo, branch):
-        fname = owner+"."+repo+"."+branch+".log"
+        fname = owner+"."+repo+"."+branch.replace("/",".")+".log"
         # Check if logfile exists
         if os.path.isfile(fname):
             web.header('Content-Type', 'text/plain')
