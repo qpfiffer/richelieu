@@ -7,7 +7,7 @@ import scripts
 
 urls = (
     '/richelieu/([^/]*)/([^/]*)', 'push',
-    '/richelieu/([^/]*)/([^/]*)/([^/]*)', 'get'
+    '/richelieu/([^/]*)/([^/]*)/(.*)', 'get'
 )
 
 app = web.application(urls, globals())
@@ -30,7 +30,7 @@ class get:
         if os.path.isfile(fname):
             web.header('Content-Type', 'text/plain')
             with open(fname, "r") as logfile:
-                return f.read()
+                return logfile.read()
         else:
             return web.notfound()
 
