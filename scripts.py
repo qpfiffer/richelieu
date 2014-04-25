@@ -16,7 +16,7 @@ def Oleg(owner, repo):
 		# Run ccpcheck
 		print "Running ccpcheck.."
 		cppres = Popen(["cppcheck","-I "+owner+"/"+repo+"/include ",owner+"/"+repo+"/src"], stdout=PIPE).stdout.read()
-		commitlog = "COMMIT %s - %s\r\n%s (%s <%s>)\r\n\r\n" % commit["id"], commit["timestamp"], commit["message"], commit["author"]["name"], commit["author"]["email"]
+		commitlog = "COMMIT %s - %s\r\n%s (%s <%s>)\r\n\r\n" % (commit["id"], commit["timestamp"], commit["message"], commit["author"]["name"], commit["author"]["email"])
 		# Write to file
 		with open(owner+"."+repo+"."+branch+".log", "w") as logfile:
 			logfile.write(commitlog+cppres)
