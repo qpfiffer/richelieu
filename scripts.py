@@ -15,7 +15,7 @@ def Oleg(owner, repo):
 		git.pull()
 		# Run ccpcheck
 		print "Running ccpcheck.."
-		cppres = Popen("cppcheck -I "+owner+"/"+repo+"/include "+owner+"/"+repo+"/src", stdout=PIPE).stdout.read()
+		cppres = Popen(["cppcheck","-I "+owner+"/"+repo+"/include ",owner+"/"+repo+"/src"], stdout=PIPE).stdout.read()
 		print cppres
 
 	return process
