@@ -1,9 +1,26 @@
+$def with (data)
 <!doctype html>
 <html>
 <head>
-<title>Last log for $owner/$repo</title>
+<title>Last log for $data["owner"]/$data["repo"]</title>
+<style>
+body {
+	font-family: sans-serif;
+}
+h1,h2 { margin: 0; padding: 0; }
+h2 { font-size: 1.2em; margin: 10px 0; font-weight: normal; }
+h3 { font-size: 1.1em; font-weight: normal; }
+pre { font-family: "Consolas", monospace; }
+</style>
 </head>
 <body>
-$cpp
+<h2>$data["id"] - $data["timestamp"]</h2>
+<h1>$data["owner"]/$data["repo"] &rsaquo; $data["branch"]</h1>
+<h3>$data["message"] ($data["author"]["name"] &lt;$data["author"]["email"]>)</h3>
+<pre>$data["cpp"]</pre>
+<script>
+pre = document.querySelector("pre");
+pre.innerHTML = pre.innerHTML.substr(pre.innerHTML.indexOf("@"))
+</script>
 </body>
 </html>

@@ -13,7 +13,7 @@ urls = (
 app = web.application(urls, globals())
 
 refstr = len("refs/heads/")
-templates = web.template.render("templates")
+render = web.template.render("templates")
 
 class push:
     def POST(self, owner, repo):
@@ -35,7 +35,7 @@ class get:
             with open(fname+".cppcheck.log","r") as cppcheck:
                 cppdata = cppcheck.read()
                 logdata["cpp"] = cppdata
-            render.log(logdata)
+            return render.log(data=logdata)
         else:
             return web.notfound()
 

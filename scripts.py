@@ -29,7 +29,7 @@ def Oleg(owner, repo):
             outcpp = ''.join(cppres)
         # Write to files
         with open(filepath+".cppcheck.log","w") as cppfile:
-            outcpp.write(cppres)
+            cppfile.write(outcpp)
         with open(filepath+".json", "w") as logfile:
             logfile.write(json.dumps(cdata))
         print "Logfile written!"
