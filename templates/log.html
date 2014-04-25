@@ -6,21 +6,35 @@ $def with (data)
 <style>
 body {
 	font-family: sans-serif;
+	padding: 0; margin: 0;
+	background-color: #f3f3f3;
 }
-h1,h2 { margin: 0; padding: 0; }
-h2 { font-size: 1.2em; margin: 10px 0; font-weight: normal; }
-h3 { font-size: 1.1em; font-weight: normal; }
-pre { font-family: "Consolas", monospace; }
+h1,h2,h3,h4 { margin: 0; padding: 0; }
+h2 { font-size: 1.2em; margin: 5px 0; font-weight: normal; }
+h3 { font-size: 1.1em; margin: 5px 0; font-weight: normal; }
+h4 { padding: 5px 10px; }
+header { background-color: #ddd; border-bottom: 5px solid #ccc; 
+	     padding: 10px; margin-bottom: 10px; }
+pre { font-family: "Consolas", monospace; border-left: 3px solid #aaa; 
+	  padding: 5px; margin: 10px; background-color: #fff; }
 </style>
 </head>
 <body>
-<h2>$data["id"] - $data["timestamp"]</h2>
-<h1>$data["owner"]/$data["repo"] &rsaquo; $data["branch"]</h1>
-<h3>$data["message"] ($data["author"]["name"] &lt;$data["author"]["email"]>)</h3>
+<header>
+	<h2>$data["id"] - $data["timestamp"]</h2>
+	<h1>$data["owner"]/$data["repo"] &rsaquo; $data["branch"]</h1>
+	<h3>$data["message"] ($data["author"]["name"] &lt;$data["author"]["email"]>)</h3>
+</header>
+<h4>Cppcheck</h4>
 <pre>$data["cpp"]</pre>
 <script>
 pre = document.querySelector("pre");
-pre.innerHTML = pre.innerHTML.substr(pre.innerHTML.indexOf("@"))
+if (pre.innerHTML.length > 0) {
+	if (pre.innerHTML.indexOf("@") > 0)
+		pre.innerHTML = pre.innerHTML.substr(pre.innerHTML.indexOf("@"))
+} else {
+	pre.outerHTML = "<i>Empty output from cppcheck :)</i>";
+}
 </script>
 </body>
 </html>

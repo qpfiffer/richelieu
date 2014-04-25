@@ -21,13 +21,15 @@ def Oleg(owner, repo):
         filepath = owner+"."+repo+"."+branch.replace("/",".")
         # Load old file (if it exists)
         if os.path.isfile(filepath+".cppcheck.log"):
-            with open(filepath+".cppcheck.log","r") as cppfile:
-                oldcpp = cppfile.readlines()
-                cppdiff = difflib.unified_diff(oldcpp, cppres)
+            with open(filepath+".cppcheck.diff","r") as difffile:
+                oldcpp = difffile.readlines()
+                cpudiff = difflib.unified_diff(oldcpp, cppres)
                 outcpp = ''.join(cppdiff)
         else:
             outcpp = ''.join(cppres)
         # Write to files
+        with open(filepath+".cppcheck.diff","w") as difffile:
+            difffile.write(''.join(cppres))
         with open(filepath+".cppcheck.log","w") as cppfile:
             cppfile.write(outcpp)
         with open(filepath+".json", "w") as logfile:

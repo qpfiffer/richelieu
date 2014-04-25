@@ -1,12 +1,12 @@
 import web
 import json
-import os.path
+import os, os.path
 
 # Import all scripts
 import scripts
 
 urls = (
-    '/richelieu/([^/]*)/([^/]*)', 'push',
+    '/richelieu/([^/]*)/([^/]*)/?', 'push',
     '/richelieu/([^/]*)/([^/]*)/(.*)', 'get'
 )
 
@@ -16,6 +16,9 @@ refstr = len("refs/heads/")
 render = web.template.render("templates")
 
 class push:
+    def GET(self, owner, repo):
+        branches = [ f[len(owner+"."+repo+"."):len(f)-5].replace(".","/") for f in os.listdir(".") if os.path.isfile(f) and f.startswith(owner+"."+repo) and f.endswith("json") ]
+        return render.branchlist(data={"branches":branches,"owner":owner,"repo":repo})
     def POST(self, owner, repo):
         push = json.loads(web.input()["payload"])
         branch = push["ref"][refstr:]
