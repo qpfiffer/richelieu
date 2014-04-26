@@ -31,7 +31,7 @@ class get:
     def GET(self, owner, repo, branch):
         fname = owner+"."+repo+"."+branch.replace("/",".")
         # Check if logfile exists
-        if os.path.isfile(fname+".json"):
+        if os.path.isfile(owner+"/"+fname+".json"):
             web.header('Content-Type', 'text/html')
             with open(owner+"/"+fname+".json", "r") as logfile:
                 logdata = json.loads(logfile.read())
