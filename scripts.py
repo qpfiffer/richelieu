@@ -21,9 +21,9 @@ def Oleg(owner, repo):
         filepath = owner+"."+repo+"."+branch.replace("/",".")
         # Load old file (if it exists)
         if os.path.isfile(filepath+".cppcheck.log"):
-            with open(filepath+".cppcheck.diff","r") as difffile:
+            with open(owner+"/"+filepath+".cppcheck.diff","r") as difffile:
                 oldcpp = difffile.readlines()
-                cpudiff = difflib.unified_diff(oldcpp, cppres)
+                cppdiff = difflib.unified_diff(oldcpp, cppres)
                 outcpp = ''.join(cppdiff)
         else:
             outcpp = ''.join(cppres)
@@ -33,11 +33,11 @@ def Oleg(owner, repo):
         if last.find("No bugs") < 0:
             cdata["dir"] = last[last.find("scan/")+5:last.find("examine")-5]
         # Write to files
-        with open(filepath+".cppcheck.diff","w") as difffile:
+        with open(owner+"/"+filepath+".cppcheck.diff","w") as difffile:
             difffile.write(''.join(cppres))
-        with open(filepath+".cppcheck.log","w") as cppfile:
+        with open(owner+"/"+filepath+".cppcheck.log","w") as cppfile:
             cppfile.write(outcpp)
-        with open(filepath+".json", "w") as logfile:
+        with open(owner+"/"+filepath+".json", "w") as logfile:
             logfile.write(json.dumps(cdata))
         print "Logfile written!"
         return "All okay!"

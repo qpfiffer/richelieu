@@ -17,7 +17,7 @@ render = web.template.render("templates")
 
 class push:
     def GET(self, owner, repo):
-        branches = [ f[len(owner+"."+repo+"."):len(f)-5].replace(".","/") for f in os.listdir(".") if os.path.isfile(f) and f.startswith(owner+"."+repo) and f.endswith("json") ]
+        branches = [ f[len(owner+"."+repo+"."):len(f)-5].replace(".","/") for f in os.listdir(owner) if os.path.isfile(owner+"/"+f) and f.startswith(owner+"."+repo) and f.endswith("json") ]
         return render.branchlist(data={"branches":branches,"owner":owner,"repo":repo})
     def POST(self, owner, repo):
         push = json.loads(web.input()["payload"])
@@ -33,9 +33,9 @@ class get:
         # Check if logfile exists
         if os.path.isfile(fname+".json"):
             web.header('Content-Type', 'text/html')
-            with open(fname+".json", "r") as logfile:
+            with open(owner+"/"+fname+".json", "r") as logfile:
                 logdata = json.loads(logfile.read())
-            with open(fname+".cppcheck.log","r") as cppcheck:
+            with open(owner+"/"+fname+".cppcheck.log","r") as cppcheck:
                 cppdata = cppcheck.read()
                 logdata["cpp"] = cppdata
             return render.log(data=logdata)
