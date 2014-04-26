@@ -27,6 +27,11 @@ def Oleg(owner, repo):
                 outcpp = ''.join(cppdiff)
         else:
             outcpp = ''.join(cppres)
+        # Run clang static analyzer (scan-build)
+        clangres = Popen(["scan-build","--use-analyzer","/usr/bin/clang","-o","/var/www/scans/"+owner+"/"+repo,"gmake","clean","liboleg","oleg_test"], cwd=owner+"/"+repo, stdout=PIPE, stderr=PIPE).stdout.readlines()
+        last = clangres[len(clangres)-1]
+        if last.find("No bugs") < 0:
+            cdata["dir"] = last[last.find("scan/")+5:last.find("examine")-5]
         # Write to files
         with open(filepath+".cppcheck.diff","w") as difffile:
             difffile.write(''.join(cppres))
