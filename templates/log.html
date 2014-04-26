@@ -3,30 +3,40 @@ $def with (data)
 <html>
 <head>
 <title>Last log for $data["owner"]/$data["repo"]</title>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700|Source+Code+Pro' rel='stylesheet' type='text/css'>
 <style>
 body {
-	font-family: sans-serif;
+	font-family: 'Source Sans Pro', sans-serif;
 	padding: 0; margin: 0;
-	background-color: #f3f3f3;
 }
 h1,h2,h3,h4 { margin: 0; padding: 0; }
-h2 { font-size: 1.2em; margin: 5px 0; font-weight: normal; }
-h3 { font-size: 1.1em; margin: 5px 0; font-weight: normal; }
-h4 { padding: 5px 10px; }
-header { background-color: #ddd; border-bottom: 5px solid #ccc; 
-	     padding: 10px; margin-bottom: 10px; }
-pre { font-family: "Consolas", monospace; border-left: 3px solid #aaa; 
-	  padding: 5px; margin: 10px; background-color: #fff; }
+h1,h2,h3 { font-family: "Source Sans Pro", sans-serif; }
+h1 { font-size: 1.4em; font-weight: 700; }
+h2 { font-size: 1.0em; margin: 5px 0; font-weight: 300; }
+h3 { font-size: 1.1em; margin: 5px 0; font-weight: 300; }
+h4 { padding: 5px 10px; font-weight: 300; font-size: 1.3em; }
+header { padding: 10px; margin-bottom: 10px; }
+pre { font-family: "Source Code Pro", "Consolas", monospace; 
+	  border: 1px solid #aaa; font-size: 0.8em;
+	  padding: 5px; margin: 10px; border-left-width: 3px;
+	  border-radius: 3px; }
+p { padding: 0 10px; margin: 5px; }
+a, a:visited { color: #36a; }
 </style>
 </head>
 <body>
 <header>
-	<h2>$data["id"] - $data["timestamp"]</h2>
-	<h1>$data["owner"]/$data["repo"] &rsaquo; $data["branch"]</h1>
-	<h3>$data["message"] ($data["author"]["name"] &lt;$data["author"]["email"]>)</h3>
+	<h3><a href="/richelieu/$data["owner"]/$data["repo"]">$data["owner"]/$data["repo"]</a> &rsaquo; $data["branch"]</h3>
+	<h1>$data["message"] ($data["author"]["name"] &lt;$data["author"]["email"]>)</h1>
+	<h2 style="font-size: 0.9em; font-family:'Source Code Pro',monospace;"><a href="https://github.com/$data["owner"]/$data["repo"]/commit/$data["id"]">$data["id"]</a> - $data["timestamp"]</h2>
 </header>
 <h4>Cppcheck</h4>
 <pre>$data["cpp"]</pre>
+<h4>Clang static analyzer</h4>
+$if "dir" in data:
+	<p>Report file generated: <a href="https://padrepio.in/scans/$data["owner"]/$data["repo"]/$data["dir"]">$data["dir"]</a></p>
+$else:
+	<p>No report generated (likely nothing to report)</p>
 <script>
 pre = document.querySelector("pre");
 if (pre.innerHTML.length > 0) {
