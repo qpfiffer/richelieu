@@ -1,7 +1,6 @@
 from git import *
 import json, os, difflib
 from subprocess import Popen, PIPE
-
 bind = {}
 
 def Oleg(owner, repo):
@@ -16,7 +15,7 @@ def Oleg(owner, repo):
         git.pull()
         # Run ccpcheck
         print "Running ccpcheck.."
-        cppres = Popen(["cppcheck","-I",owner+"/"+repo+"/include",owner+"/"+repo+"/src"], stdout=PIPE, stderr=PIPE).stderr.readlines()
+        cppres = Popen(["cppcheck","--enable=warning,style,performance,portability,information,missingInclude","-I",owner+"/"+repo+"/include",owner+"/"+repo+"/src"], stdout=PIPE, stderr=PIPE).stderr.readlines()
         cdata = {"id":commit["id"], "timestamp":commit["timestamp"], "owner":owner, "repo":repo, "branch": branch, "message":commit["message"], "author":commit["author"]}
         filepath = owner+"."+repo+"."+branch.replace("/",".")
         # Load old file (if it exists)
