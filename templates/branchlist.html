@@ -1,0 +1,24 @@
+$def with (data)
+<!doctype html>
+<html>
+<head>
+<title>$data["owner"]/$data["repo"] branch list</title>
+<style>
+body {
+	font-family: sans-serif;
+}
+li {
+	list-style-type: none;
+}
+</style>
+</head>
+<body>
+<h1>$data["owner"]/$data["repo"]</h1>
+<ul>
+$for b in data["branches"]:
+	<a href="/richelieu/$data["owner"]/$data["repo"]/$b"><li>$b</li></a>
+</ul>
+<br />
+<small>Not seeing a branch? It means it hasn't generated a logfile yet, push to that branch!</small>
+</body>
+</html>
