@@ -15,8 +15,8 @@ def Oleg(owner, repo):
         git.pull()
         # Run ccpcheck
         print "Running ccpcheck.."
-        includes = "{owner}/{repo}/include".format(ownerjowern, repo)
-        sources = "{owner}/{repo}/src".format(owner=owner, repo)
+        includes = "{owner}/{repo}/include".format(owner=owner, repo=repo)
+        sources = "{owner}/{repo}/src".format(owner=owner, repo=repo)
         enabled_settings = "--enable=warning,style,performance,portability,information,missingInclude"
         cppres = Popen(["cppcheck", enabled_settings, "-I", includes, sources], stdout=PIPE, stderr=PIPE).stderr.readlines()
         cdata = {"id":commit["id"], "timestamp":commit["timestamp"], "owner":owner, "repo":repo, "branch": branch, "message":commit["message"], "author":commit["author"]}
